@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'database_orm.core'
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,6 @@ LOGGING = {
         }
     }
 }
+
+USER_COUNT = 5000
+CALENDAR_NAMES = ['primary', 'ooo', 'work', 'play', 'personal']

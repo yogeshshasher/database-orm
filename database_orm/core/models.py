@@ -12,7 +12,7 @@ class User(models.Model):
 
 
 class Calendar(models.Model):
-    user = models.ForeignKey(User, related_name="calendar_owner", unique=True)
+    user = models.ForeignKey(User, related_name="calendar_owner")
     name = models.CharField(max_length=2047)
 
 
