@@ -163,3 +163,7 @@ LOGGING = {
 
 USER_COUNT = 5000
 CALENDAR_NAMES = ['primary', 'ooo', 'work', 'play', 'personal']
+MEETING_PREFIX = ['Weekly', 'Daily', 'Monthly', 'Yearly']
+MEETING_SUFFIX = ['Scrum', '1:1', 'Planning', 'Review']
+MEETING_COUNT = 10000
+MEETING_DURATION = [15, 30, 60, 120, 480]

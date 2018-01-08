@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from random import randint
-
+import datetime
 # Create your views here.
 import time
+from django.utils import timezone
+from random import randint, choice
+
 from django.db import connection
 
-from database_orm.core.models import User, Calendar
-from database_orm.settings import USER_COUNT, CALENDAR_NAMES
+from database_orm.core.models import User, Calendar, Meeting, Attendee
+from database_orm.settings import USER_COUNT, CALENDAR_NAMES, MEETING_COUNT, MEETING_PREFIX, MEETING_SUFFIX, \
+    MEETING_DURATION
 
 
 def create_user():
@@ -72,3 +75,26 @@ def create_calendar():
         for cal in CALENDAR_NAMES:
             calendar.append(Calendar(user=user, name=cal))
     Calendar.objects.bulk_create(calendar)
+
+
+def create_meetings():
+    meetings = []
+    calendars = list(Calendar.objects.all().values_list('id', flat=True))
+    current_time = timezone.now()
+    for i in range(MEETING_COUNT):
+        calendar = Calendar.objects.get(id=choice(calendars))
+        meetings.append(Meeting(calendar=calendar,
+                                title=str(choice(MEETING_PREFIX)) + ' ' + str(choice(MEETING_SUFFIX)),
+                                start_time=current_time,
+                                end_time=current_time + datetime.timedelta(minutes=int(choice(MEETING_DURATION)))
+                                ))
+    Meeting.objects.bulk_create(meetings)
+
+
+def create_attendees():
+    attendees = []
+    meetings = Meeting.objects.all()
+    for meeting in meetings:
+        user = User.objects.get(name='User'+str(randint(1, 10)))
+        attendees.append(Attendee(user=user, meeting=meeting))
+    Attendee.objects.bulk_create(attendees)
