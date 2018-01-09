@@ -61,7 +61,7 @@ def create_bulk_user():
     user = []
     for i in range(USER_COUNT):
         user.append(User(name='User' + str(i + 1),
-                         team_name='Team'+str(randint(1, 100))))
+                         team_name='Team' + str(randint(1, 100))))
     start_time = time.time()
     User.objects.bulk_create(user)
     end_time = time.time()
@@ -95,6 +95,22 @@ def create_attendees():
     attendees = []
     meetings = Meeting.objects.all()
     for meeting in meetings:
-        user = User.objects.get(name='User'+str(randint(1, 10)))
+        user = User.objects.get(name='User' + str(randint(1, 10)))
         attendees.append(Attendee(user=user, meeting=meeting))
     Attendee.objects.bulk_create(attendees)
+
+
+def delete_all_users():
+    User.objects.all().delete()
+
+
+def delete_all_calendars():
+    Calendar.objects.all().delete()
+
+
+def delete_all_meetings():
+    Meeting.objects.all().delete()
+
+
+def delete_all_attendees():
+    Attendee.objects.all().delete()
