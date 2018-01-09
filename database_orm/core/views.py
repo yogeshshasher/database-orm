@@ -9,6 +9,7 @@ from random import randint, choice
 
 from django.db import connection
 
+from database_orm.context_manager import NumOfQueries
 from database_orm.core.models import User, Calendar, Meeting, Attendee
 from database_orm.settings import USER_COUNT, CALENDAR_NAMES, MEETING_COUNT, MEETING_PREFIX, MEETING_SUFFIX, \
     MEETING_DURATION
@@ -114,3 +115,25 @@ def delete_all_meetings():
 
 def delete_all_attendees():
     Attendee.objects.all().delete()
+
+
+def select_attendee_with_daily_scrum():
+    with NumOfQueries('select_attendee_with_daily_scrum') as count:
+        attendees = Attendee.objects.filter(meeting__title='Daily Scrum')
+        for attendee in attendees:
+            print attendee.user
+
+
+def select_attendee_with_daily_scrum_select_related():
+    with NumOfQueries('select_attendee_with_daily_scrum_select_related'):
+        attendees = Attendee.objects.select_related('user').filter(meeting__title='Daily Scrum')
+        for attendee in attendees:
+            print attendee.user
+
+
+def select_attendee_with_daily_scrum_prefect_related():
+    attendees = Attendee.objects.filter(meeting__title='Daily Scrum').values_list('user', flat=True)
+    with NumOfQueries('select_attendee_with_daily_scrum_prefect_related'):
+        users = User.objects.prefetch_related('user_attendee').filter(id__in=attendees)
+        for user in users:
+            print user
