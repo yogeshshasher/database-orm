@@ -21,21 +21,6 @@ class TestORMBulkSave(TestCase):
         users = User.objects.all()
         self.assertEqual(users.count(), USER_COUNT)
 
-        # Creating Calendar
-        create_calendar()
-        calendar = Calendar.objects.all()
-        self.assertEqual(calendar.count(), USER_COUNT*len(CALENDAR_NAMES))
-
-        # Creating Meetings
-        create_meetings()
-        meetings = Meeting.objects.all()
-        self.assertEqual(meetings.count(), MEETING_COUNT)
-
-        # Creating Attendees
-        create_attendees()
-        attendees = Attendee.objects.all()
-        self.assertEqual(attendees.count(), MEETING_COUNT)
-
 
 class TestSQLSingleSave(TestCase):
     def test_create_user_using_sql(self):
