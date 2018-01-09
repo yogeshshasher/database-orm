@@ -12,5 +12,5 @@ class NumOfQueries(object):
 
     def __exit__(self, *args):
         count = len(connection.queries) - self.initial_query_count
-        print connection.queries[-count:]
+        # print connection.queries[-count:]
         print "For {} {} queries hit".format(self.label, count)
