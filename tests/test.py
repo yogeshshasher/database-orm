@@ -1,6 +1,7 @@
 import time
 from django.test import TestCase
 
+from database_orm.context_manager import Timer
 from database_orm.core.models import User, Calendar, Meeting, Attendee
 from database_orm.core.views import create_user, create_bulk_user, create_calendar, create_user_using_sql, \
     create_user_using_sql_batch, create_meetings, create_attendees

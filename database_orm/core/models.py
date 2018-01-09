@@ -10,6 +10,9 @@ class User(models.Model):
     name = models.CharField(max_length=2047)
     team_name = models.CharField(max_length=2047)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Calendar(models.Model):
     user = models.ForeignKey(User, related_name="calendar_owner")
