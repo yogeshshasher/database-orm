@@ -282,7 +282,7 @@ def delete_all_attendees():
 
 # Select all attendees for Daily Scrum Meeting through filter
 def select_attendee_with_daily_scrum():
-    with NumOfQueries('select_attendee_with_daily_scrum'):
+    with NumOfQueries('select_attendee'):
         attendees = Attendee.objects.all()
         for attendee in attendees:
             print attendee.user
@@ -290,7 +290,7 @@ def select_attendee_with_daily_scrum():
 
 # Select all attendees for Daily Scrum Meeting through select_related
 def select_attendee_with_daily_scrum_select_related():
-    with NumOfQueries('select_attendee_with_daily_scrum_select_related'):
+    with NumOfQueries('select_attendee_select_related'):
         attendees = Attendee.objects.select_related('user').all()
         for attendee in attendees:
             print attendee.user
@@ -299,7 +299,7 @@ def select_attendee_with_daily_scrum_select_related():
 # Select all attendees for Daily Scrum Meeting through prefetch_related
 def select_attendee_with_daily_scrum_prefect_related():
     attendees = Attendee.objects.all().values_list('user', flat=True)
-    with NumOfQueries('select_attendee_with_daily_scrum_prefect_related'):
+    with NumOfQueries('select_attendee_prefect_related'):
         users = User.objects.prefetch_related('user_attendee').filter(id__in=attendees)
         for user in users:
             print user
