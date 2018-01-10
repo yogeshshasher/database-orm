@@ -6,7 +6,7 @@
 ## Database Setup
 ```bash
 $ mysql -uroot -p
-mysql> create datatbase database_orm;
+mysql> create database database_orm;
 ```
 
 ## Django Project setup
