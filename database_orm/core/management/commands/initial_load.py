@@ -6,7 +6,7 @@ from database_orm.core import views
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        views.create_bulk_user()
-        views.create_calendar()
-        views.create_meetings()
-        views.create_attendees()
+        views.create_users_using_sql_batch()
+        views.create_calendars_using_sql_batch()
+        views.create_meetings_using_sql_batch()
+        views.create_attendees_using_sql_batch()
