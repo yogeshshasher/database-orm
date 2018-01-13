@@ -192,6 +192,79 @@ def create_attendees_using_sql():
     return total_time
 
 
+# Creating entries through SQL single INSERT - executemany
+
+def create_users_using_sql_and_executemany():
+    cursor = connection.cursor()
+    values_list = []
+    for i in range(USER_COUNT):
+        name = 'User' + str(i + 1)
+        team_name = 'Team' + str(randint(1, 100))
+        values_list.append((name, team_name))
+
+    query_template = "insert into core_user(name, team_name) values(%s, %s)"
+    start_time = time.time()
+    cursor.executemany(query_template, values_list)
+    end_time = time.time()
+    cursor.close()
+    return end_time - start_time
+
+
+def create_calendars_using_sql_and_executemany():
+    cursor = connection.cursor()
+    values_list = []
+    users = list(User.objects.all().values_list('id', flat=True))
+    query_template = "INSERT into core_calendar(name, user_id) VALUES(%s, %s)"
+
+    for user in users:
+        for cal in CALENDAR_NAMES:
+            values_list.append((cal, user))
+    start_time = time.time()
+    cursor.executemany(query_template, values_list)
+    end_time = time.time()
+    cursor.close()
+    return end_time - start_time
+
+
+def create_meetings_using_sql_and_executemany():
+    cursor = connection.cursor()
+    calendars = list(Calendar.objects.all().values_list('id', flat=True))
+    current_time = timezone.now().replace(tzinfo=None)
+
+    query_template = "INSERT into core_meeting(title, start_time, end_time, calendar_id) VALUES(%s, %s, %s, %s)"
+    values_list = []
+    for i in range(MEETING_COUNT):
+        title = str(choice(MEETING_PREFIX)) + ' ' + str(choice(MEETING_SUFFIX))
+        start_time = current_time
+        end_time = current_time + datetime.timedelta(minutes=int(choice(MEETING_DURATION)))
+        calendar_id = choice(calendars)
+
+        values_list.append((title, start_time, end_time, calendar_id))
+
+    start_time = time.time()
+    cursor.executemany(query_template, values_list)
+    end_time = time.time()
+    cursor.close()
+    return end_time - start_time
+
+
+def create_attendees_using_sql_and_executemany():
+    cursor = connection.cursor()
+    meetings = list(Meeting.objects.all().values_list('id', flat=True))
+
+    query_template = "INSERT INTO core_attendee(user_id, meeting_id) VALUES(%s, %s)"
+    values_list = []
+    for meeting in meetings:
+        user = User.objects.get(name='User' + str(randint(1, 10))).id
+        values_list.append((user, meeting))
+
+    start_time = time.time()
+    cursor.executemany(query_template, values_list)
+    end_time = time.time()
+    cursor.close()
+    return end_time - start_time
+
+
 # Creating entries through SQL multiple INSERT
 
 def create_users_using_sql_batch():

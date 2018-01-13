@@ -51,3 +51,13 @@ class TestSQLBatchSave(TestCase):
 
         attendees = Attendee.objects.all()
         self.assertEqual(attendees.count(), MEETING_COUNT)
+
+    def test_create_user_using_sql_batch_and_executemany(self):
+        t1 = views.create_users_using_sql_and_executemany()
+        t2 = views.create_calendars_using_sql_and_executemany()
+        t3 = views.create_meetings_using_sql_and_executemany()
+        t4 = views.create_attendees_using_sql_and_executemany()
+        print "SQL - Batch Save using cursor.executemany {}".format(t1 + t2 + t3 + t4)
+
+        attendees = Attendee.objects.all()
+        self.assertEqual(attendees.count(), MEETING_COUNT)
