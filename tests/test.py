@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from database_orm.core.models import User, Calendar, Meeting, Attendee
 from database_orm.core.views import create_user, create_bulk_user, create_calendar, create_user_using_sql, \
-    create_user_using_sql_batch, create_meetings, create_attendees
+    create_user_using_sql_batch, create_meetings, create_attendees, create_user_using_sql_batch_and_executemany
 from database_orm.settings import USER_COUNT, CALENDAR_NAMES, MEETING_COUNT
 
 
@@ -34,5 +34,11 @@ class TestSQLBatchSave(TestCase):
     def test_create_user_using_sql_batch(self):
         total_time = create_user_using_sql_batch()
         print "SQL - Batch Save {}".format(total_time)
+        users = User.objects.all()
+        self.assertEqual(users.count(), USER_COUNT)
+
+    def test_create_user_using_sql_batch_and_executemany(self):
+        total_time = create_user_using_sql_batch_and_executemany()
+        print "SQL - Batch Save using cursor.executemany {}".format(total_time)
         users = User.objects.all()
         self.assertEqual(users.count(), USER_COUNT)
