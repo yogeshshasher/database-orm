@@ -372,7 +372,7 @@ def select_attendee_with_daily_scrum_select_related():
 # Select all attendees for Daily Scrum Meeting through prefetch_related
 def select_attendee_with_daily_scrum_prefetch_related():
     attendees = Attendee.objects.all().values_list('user', flat=True)
-    with NumOfQueries(label='select_attendee_prefect_related'):
+    with NumOfQueries(label='select_attendee_prefetch_related'):
         users = User.objects.prefetch_related('user_attendee').filter(id__in=attendees)
         for user in users:
             print user
