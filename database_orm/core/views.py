@@ -74,6 +74,24 @@ def create_user_using_sql_batch_and_executemany():
     return end_time - start_time
 
 
+def create_user_using_sql_batch_and_executemany_sql_injection():
+    cursor = connection.cursor()
+    values_list = []
+    for i in range(USER_COUNT):
+        name = 'User' + str(i + 1)
+        team_name = 'Team' + str(randint(1, 100))
+        values_list.append((name, team_name))
+
+    values_list.append(("hiway, hashedin);insert into core_user(name, team_name) values(meetnotes", "hashedin)"))
+
+    query_template = "insert into core_user(name, team_name) values(%s, %s)"
+    start_time = time.time()
+    cursor.executemany(query_template, values_list)
+    end_time = time.time()
+    cursor.close()
+    return end_time - start_time
+
+
 def create_bulk_user():
     user = []
     for i in range(USER_COUNT):
