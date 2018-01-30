@@ -250,13 +250,16 @@ def create_meetings_using_sql_and_executemany():
 
 def create_attendees_using_sql_and_executemany():
     cursor = connection.cursor()
+
     meetings = list(Meeting.objects.all().values_list('id', flat=True))
+    users = list(User.objects.all().values_list('id', flat=True))
 
     query_template = "INSERT INTO core_attendee(user_id, meeting_id) VALUES(%s, %s)"
     values_list = []
-    for meeting in meetings:
-        user = User.objects.get(name='User' + str(randint(1, 10))).id
-        values_list.append((user, meeting))
+
+    for meeting_id in meetings:
+        user_id = users[randint(1, len(users)) - 1]
+        values_list.append((user_id, meeting_id))
 
     start_time = time.time()
     cursor.executemany(query_template, values_list)
